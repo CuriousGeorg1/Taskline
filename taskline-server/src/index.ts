@@ -1,5 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import "dotenv/config";
+import { drizzle } from "drizzle-orm/node-postgres";
+const db = drizzle(process.env.DATABASE_URL!);
 
 dotenv.config();
 
