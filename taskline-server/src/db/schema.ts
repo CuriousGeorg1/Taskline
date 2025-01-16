@@ -31,7 +31,7 @@ export const locationTable = pgTable("location", {
     .references(() => businessTable.id),
 });
 
-export const jourlanEntry = pgTable("journal_entry", {
+export const journalEntry = pgTable("journal_entry", {
   locationId: integer()
     .notNull()
     .references(() => locationTable.id),
