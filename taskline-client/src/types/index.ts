@@ -8,3 +8,9 @@ export type CreateUserRequest = {
   email: string;
   profilePicture?: string | null;
 };
+
+export type GetTokenRequest = {
+  id: string;
+  email: string;
+  roles: string[];
+};

@@ -4,6 +4,10 @@ import { signIn } from "../authConfig";
 import { signInFormSchema } from "@/lib/formSchemas";
 import { NextResponse } from "next/server";
 
+
+/*
+  This action is called client-side and it calls the credentialsProvider's authorize function
+*/
 export async function signInWithCredentials(
   values: z.infer<typeof signInFormSchema>,
   mode: "signin" | "signup"
