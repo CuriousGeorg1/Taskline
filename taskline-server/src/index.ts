@@ -1,57 +1,26 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import "dotenv/config";
-import bcrypt from "bcrypt";
-import { drizzle } from "drizzle-orm/node-postgres";
-import jwt from "jsonwebtoken";
-import { Pool } from "pg";
-
+import morgan from "morgan";
+import authController from "./controller/authController";
 dotenv.config();
 
-const app: Express = express();
 const port = process.env.EXPRESS_PORT || 4000;
+const env = process.env.NODE_ENV || "development";
+
+const app: Express = express();
 
 app.use(express.json());
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+// Log all requests in development mode
+// Use the 'combined' format in production
+app.use(morgan(env === 'production' ? 'combined' : 'dev'));
 
-const db = drizzle(pool);
-
-app.post("/auth/register", async (req, res) => {
-  const { email, password } = req.body;
-  const client = await pool.connect();
-  try {
-    await client.query("BEGIN");
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await client.query(
-      "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
-      [email, hashedPassword]
-    );
-    // if (!process.env.JWT_SECRET) {
-    //   throw new Error("JWT_SECRET is not defined");
-    // }
-    // const token = jwt.sign({ userId: user.rows[0].id }, process.env.JWT_SECRET);
-    // await client.query("COMMIT");
-    // res.json({ token });
-  } catch (e) {
-    await client.query("ROLLBACK");
-    throw e;
-  } finally {
-    client.release();
-  }
-});
+// Bind controllers
+app.use("/auth", authController);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
-});
-
-let counter = 0;
-
-app.get("/counter", (req: Request, res: Response) => {
-  counter++;
-  res.send(`Counter: ${counter}`);
 });
 
 app.listen(port, () => {

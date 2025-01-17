@@ -13,13 +13,16 @@ export const usersTable = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   email: varchar({ length: 255 }).notNull().unique(),
   name: varchar({ length: 255 }),
+  password: varchar(),
+  /*
+  omit for now
   businessId: integer()
     .default(-1)
     .references(() => businessTable.id),
   locationId: integer()
     .default(-1)
     .references(() => locationTable.id),
-
+*/
   role: rolesEnum().notNull(),
 });
 

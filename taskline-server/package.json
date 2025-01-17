@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "start": "npx ts-node src/index.ts",
-    "dev": "nodemon --watch src --exec ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run build && node dist/index.js",
+    "dev": "nodemon --watch src --exec ts-node -r tsconfig-paths/register src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "drizzle-orm": "^0.38.3",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "pg": "^8.13.1",
     "taskline-server": "file:"
   },
@@ -26,6 +28,7 @@
     "@eslint/eslintrc": "^3.2.0",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.10.5",
     "@types/pg": "^8.11.10",
     "@typescript-eslint/eslint-plugin": "^8.19.1",

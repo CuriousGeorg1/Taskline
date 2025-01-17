@@ -3,7 +3,7 @@ import { drizzle as drizzlePg } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
 let db: ReturnType<typeof drizzlePg> | ReturnType<typeof drizzleNeonHttp>;
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DB_URL;
 
 if (!databaseUrl) {
   throw new Error("DATABASE_URL environment variable is required");
