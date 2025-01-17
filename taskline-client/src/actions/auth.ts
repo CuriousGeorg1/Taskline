@@ -1,6 +1,6 @@
 "use server";
 import apiClient from "@/lib/apiClient";
-import { AuthRequest, CreateUserRequest, GetTokenRequest } from "../types";
+import { LoginRequest, RegisterRequest, CreateUserRequest, GetTokenRequest } from "../types";
 
 const apiUrl = process.env.API_URL || "http://localhost:4000";
 const sharedSecret = process.env.SHARED_SECRET;
@@ -8,7 +8,7 @@ const sharedSecret = process.env.SHARED_SECRET;
 /*
   This action calls the custom backend and authorizes a user
 */
-export async function login(user: AuthRequest) {
+export async function login(user: RegisterRequest) {
   const res = await fetch(`${apiUrl}/auth/login`, {
     method: "POST",
     headers: {
@@ -25,7 +25,7 @@ export async function login(user: AuthRequest) {
 /*
   This action is for the credentials provider and calls the custom backend to register a user
 */
-export async function register(user: AuthRequest) {
+export async function register(user: LoginRequest) {
   const res = await fetch(`${apiUrl}/auth/register`, {
     method: "POST",
     headers: {
