@@ -1,13 +1,9 @@
 import { drizzle as drizzleNeonHttp } from "drizzle-orm/neon-http";
 import { drizzle as drizzlePg } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import { databaseUrl } from "../config";
 
 let db: ReturnType<typeof drizzlePg> | ReturnType<typeof drizzleNeonHttp>;
-const databaseUrl = process.env.DB_URL;
-
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL environment variable is required");
-}
 
 if (process.env.NODE_ENV === "production") {
   // In production we use the neon http adapter to connect to the database

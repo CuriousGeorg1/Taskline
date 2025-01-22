@@ -5,7 +5,7 @@ import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
 Default axios instance with base URL set to the API URL.
 */
 const apiClient = axios.create({
-  baseURL: process.env.API_URL || "http://localhost:8080",
+  baseURL: process.env.API_URL || "http://localhost:4000",
 });
 
 /*

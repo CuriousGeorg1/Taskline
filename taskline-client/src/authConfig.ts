@@ -25,7 +25,7 @@ const providers: Provider[] = [
       };
 
       if (mode === "signup") {
-        const user = await register({ name, email, password });
+        const user = await register({ name, email, password, role: "user" });
         return user;
       } else {
         const user = await login({ email, password });
@@ -64,9 +64,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
 
       const payload = {
-        id: user.id as string,
+        name: user.name as string,
         email: user.email as string,
         profilePicture: user.image,
+        role: "user",
       };
 
       return await createUser(payload);

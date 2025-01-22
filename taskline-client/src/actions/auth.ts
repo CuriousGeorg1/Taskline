@@ -41,7 +41,7 @@ export async function register(user: RegisterRequest) {
 */
 export async function createUser(user: CreateUserRequest) {
   try {
-    await apiClient.post("/users", user);
+    await apiClient.post("/users", { ...user, sharedSecret });
     return true;
   } catch (e) {
     console.error(e);
