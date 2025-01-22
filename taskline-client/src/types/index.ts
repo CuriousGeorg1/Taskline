@@ -18,5 +18,5 @@ export type CreateUserRequest = {
 export type GetTokenRequest = {
   id: string;
   email: string;
-  roles: string[];
+  role: string;
 };

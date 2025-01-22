@@ -1,44 +1,38 @@
 "use server";
 import apiClient from "@/lib/apiClient";
-import { LoginRequest, RegisterRequest, CreateUserRequest, GetTokenRequest } from "../types";
+import {
+  LoginRequest,
+  RegisterRequest,
+  CreateUserRequest,
+  GetTokenRequest,
+} from "../types";
 
-const apiUrl = process.env.API_URL || "http://localhost:4000";
 const sharedSecret = process.env.SHARED_SECRET;
 
 /*
   This action calls the custom backend and authorizes a user
 */
-export async function login(user: RegisterRequest) {
-  const res = await fetch(`${apiUrl}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch user");
+export async function login(user: LoginRequest) {
+  try {
+    const res = await apiClient.post("/auth/login", user);
+    return res.data;
+  } catch (e) {
+    console.error(e);
+    throw new Error("Failed to login user");
   }
-  return res.json();
 }
 
 /*
   This action is for the credentials provider and calls the custom backend to register a user
 */
-export async function register(user: LoginRequest) {
-  const res = await fetch(`${apiUrl}/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to create user");
+export async function register(user: RegisterRequest) {
+  try {
+    const res = await apiClient.post("/auth/register", user);
+    return res.data;
+  } catch (e) {
+    console.error(e);
+    throw new Error("Failed to register user");
   }
-
-  return res.json();
 }
 
 /* 
@@ -62,13 +56,16 @@ export async function createUser(user: CreateUserRequest) {
 */
 export async function getApiToken(user: GetTokenRequest) {
   try {
-    const res = await apiClient.post<{ token: string }>("/auth/token", {
-      sharedSecret,
-      ...user,
-    });
+    const res = await apiClient.post<{ apiToken: string; expiresIn: number }>(
+      "/auth/token",
+      {
+        sharedSecret,
+        ...user,
+      }
+    );
     return res.data;
   } catch (e) {
     console.error(e);
-    return null;
+    throw new Error("Failed to get api token");
   }
 }
