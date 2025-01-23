@@ -1,6 +1,7 @@
 export type CreateUserRequest = {
   name: string;
   email: string;
+  password?: string;
   profilePicture?: string | null;
   role: "user" | "admin";
 };
@@ -14,7 +15,7 @@ export type RegisterRequest = {
   name: string;
   email: string;
   password: string;
-  role: string;
+  role: "user" | "admin";
 };
 
 export type GetTokenRequest = {

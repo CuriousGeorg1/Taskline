@@ -16,10 +16,11 @@ authController.post("/register", async (req, res) => {
 
   try {
     const newUser = await register(user);
+    console.log("Registered user", newUser.email);
     res.status(201).json(newUser);
-  } catch (e) {
-    console.error(e);
-    res.status(400).json(e);
+  } catch (e: Error | any) {
+    console.error("Error registering user", e);
+    res.status(400).json({ message: e?.message });
   }
 });
 

@@ -102,7 +102,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const { apiToken, expiresIn } = await getApiToken({
             id: token.id as string,
             email: token.email as string,
-            role: token.role as string,
+            role: token.role as "user" | "admin",
           });
           token.apiToken = apiToken;
           token.apiTokenExpiry = Date.now() + expiresIn * 1000;

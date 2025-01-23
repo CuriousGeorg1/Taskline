@@ -14,13 +14,13 @@ export type RegisterRequest = {
   name: string;
   email: string;
   password: string;
-  role: string;
+  role: "user" | "admin";
 };
 
 export type GetTokenRequest = {
   id: string;
   email: string;
-  role: string;
+  role: "user" | "admin";
 };
 
 export type GetTokenResponse = {
