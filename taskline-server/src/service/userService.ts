@@ -4,14 +4,13 @@ import { usersTable } from "../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function createUser(user: CreateUserRequest) {
-  // Check that a user with the email doenst already exist
   const existingUser = await db
     .select()
     .from(usersTable)
     .where(eq(usersTable.email, user.email));
 
-  if (existingUser) {
-    return existingUser;
+  if (existingUser[0]) {
+    return existingUser[0];
   }
 
   const newUser = await db.insert(usersTable).values(user);

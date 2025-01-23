@@ -1,13 +1,18 @@
 export type CreateUserRequest = {
-  email: string;
   name: string;
-  password: string;
+  email: string;
+  profilePicture?: string | null;
   role: "user" | "admin";
 };
 
-export type RegisterRequest = {
+export type LoginRequest = {
   email: string;
+  password: string;
+};
+
+export type RegisterRequest = {
   name: string;
+  email: string;
   password: string;
   role: string;
 };

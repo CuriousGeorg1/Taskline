@@ -13,7 +13,6 @@ authController.post("/login", async (req, res) => {
 authController.post("/register", async (req, res) => {
   // Implement better validation later
   const user = req.body as RegisterRequest;
-  console.log(user);
 
   try {
     const newUser = await register(user);

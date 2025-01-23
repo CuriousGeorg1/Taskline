@@ -63,14 +63,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return true;
       }
 
-      const payload = {
+      return await createUser({
         name: user.name as string,
         email: user.email as string,
         profilePicture: user.image,
         role: "user",
-      };
-
-      return await createUser(payload);
+      });
     },
     /*
       Fetches an apiToken to be used to authorize actions to the custom backend

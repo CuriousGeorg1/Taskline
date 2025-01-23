@@ -20,7 +20,7 @@ export async function createToken(
   return { apiToken, expiresIn };
 }
 
-// A fucntion that verifies the jwt token
+// A function that verifies the jwt token
 export function verifyToken(token: string): boolean {
   try {
     jwt.verify(token, sharedSecret);
