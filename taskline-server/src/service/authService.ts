@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { createUser, userExists, getUserByEmail } from "./userService";
 import e from "express";
 import exp from "constants";
+import { createToken } from "./jwtService";
 
 export async function register(user: RegisterRequest) {
   const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -25,5 +26,9 @@ export async function login(email: string, password: string) {
   if (!match) {
     throw new Error("Invalid password");
   }
-  return user;
+  return createToken({
+    id: user.id.toString(),
+    email: user.email,
+    role: user.role,
+  });
 }
