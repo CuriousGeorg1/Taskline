@@ -6,11 +6,11 @@ tool designed for businesses. It's supposed to be quite simple in regards to sco
 
 ## Table of content
 
--[Scope](https://github.com/CuriousGeorg1/Taskline/tree/master#scope))
--[Users]([##users](https://github.com/CuriousGeorg1/Taskline/tree/master#users))
--[User stories](###user-stories)
--[Technologies](##Technologies)
--[UML](##UML)
+-[Scope](https://github.com/CuriousGeorg1/Taskline/tree/master#scope)
+-[Users](https://github.com/CuriousGeorg1/Taskline/tree/master#users)
+-[User stories](https://github.com/CuriousGeorg1/Taskline/tree/master?tab=readme-ov-file#user-stories)
+-[Technologies](https://github.com/CuriousGeorg1/Taskline/tree/master#technologies)
+-[UML](https://github.com/CuriousGeorg1/Taskline/tree/master#uml)
 
 ## Scope
 
