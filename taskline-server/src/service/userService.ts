@@ -20,3 +20,11 @@ export async function createUser(user: CreateUserRequest) {
     .where(eq(usersTable.email, user.email));
   return newUser[0];
 }
+
+export async function getUserByEmail(email: string) {
+  const user = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.email, email));
+  return user[0];
+}
