@@ -1,5 +1,5 @@
 "use server";
-import apiClient from "@/lib/apiClient";
+import apiClient, { serverClient } from "@/lib/apiClient";
 import {
   LoginRequest,
   RegisterRequest,
@@ -56,7 +56,7 @@ export async function createUser(user: CreateUserRequest) {
 */
 export async function getApiToken(user: GetTokenRequest) {
   try {
-    const res = await apiClient.post<{ apiToken: string; expiresIn: number }>(
+    const res = await serverClient.post<{ apiToken: string; expiresIn: number }>(
       "/auth/token",
       {
         sharedSecret,

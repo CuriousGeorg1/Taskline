@@ -3,8 +3,17 @@ import axios, { InternalAxiosRequestConfig, AxiosError } from "axios";
 
 /*
 Default axios instance with base URL set to the API URL.
+Will be used to make authenticated requests to the custom backend.
 */
 const apiClient = axios.create({
+  baseURL: process.env.API_URL || "http://localhost:4000",
+});
+
+/*
+Server axios instance with base URL set to the API URL.
+Will be used to explicitly make unauthenticated requests to the custom backend.
+*/
+export const serverClient = axios.create({
   baseURL: process.env.API_URL || "http://localhost:4000",
 });
 
