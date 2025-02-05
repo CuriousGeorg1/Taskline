@@ -27,10 +27,9 @@ const providers: Provider[] = [
       if (mode === "signup") {
         const user = await register({ name, email, password, role: "user" });
         return user;
-      } else {
-        const user = await login({ email, password });
-        return user;
       }
+      const user = await login({ email, password });
+      return user;
     },
   }),
   GitHub,
@@ -53,11 +52,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/auth/login",
   },
-  /*
+  callbacks: {
+    /*
     This callback is called every time a user signs in
     For providers other than credentials, it creates a user in the custom backend
   */
-  callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "credentials") {
         return true;
@@ -81,6 +80,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.name = user.name;
         token.role = "role"; // Change this to the role of the user. Role will be set in signIn callback
 
+        if (user.apiToken && user.expiresIn) {
+          token.apiToken = user.apiToken;
+          token.apiTokenExpiry = Date.now() + user.expiresIn * 1000;
+          return token;
+        }
+
         const { apiToken, expiresIn } = await getApiToken({
           id: user.id as string,
           email: user.email as string,
@@ -89,6 +94,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         token.apiToken = apiToken;
         token.apiTokenExpiry = Date.now() + expiresIn * 1000;
+
+        return token;
       }
 
       // Near apiTokenExpiry, it will be refreshed
@@ -116,6 +123,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       session.apiToken = token.apiToken as string;
+      session.user.id = token.id as string;
       return session;
     },
   },

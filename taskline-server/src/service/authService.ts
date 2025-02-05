@@ -1,8 +1,6 @@
 import { RegisterRequest } from "../types";
 import bcrypt from "bcrypt";
 import { createUser, userExists, getUserByEmail } from "./userService";
-import e from "express";
-import exp from "constants";
 import { createToken } from "./jwtService";
 
 export async function register(user: RegisterRequest) {
@@ -26,9 +24,12 @@ export async function login(email: string, password: string) {
   if (!match) {
     throw new Error("Invalid password");
   }
-  return createToken({
+
+  const { apiToken, expiresIn } = await createToken({
     id: user.id.toString(),
     email: user.email,
     role: user.role,
   });
+
+  return { ...user, apiToken, expiresIn };
 }

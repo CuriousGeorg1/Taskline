@@ -40,8 +40,5 @@ authController.post("/token", hasSharedSecret, async (req, res) => {
   res.status(200).json(getTokenResponse);
 });
 
-authController.post("/ping", authenticated, async (req, res) => {
-  res.status(200).json({ message: "Pong" });
-});
 
 export default authController;
