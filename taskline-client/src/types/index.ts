@@ -32,6 +32,6 @@ export type JournalEntry = {
   locationId: number;
   userId: string;
   date: Date;
-  entry: string;
+  journalEntry: string;
   responsibleParty: string;
 };

@@ -6,11 +6,11 @@ export default async function CardWrapper() {
   const numberOfUnsolved = numberOfEntries - solvedEntries;
 
   return (
-    <>
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <Card title="Number of entries" value={numberOfEntries} type="entries" />
       <Card title="Solved entries" value={solvedEntries} type="solved" />
       <Card title="Unsolved entries" value={numberOfUnsolved} type="unsolved" />
-    </>
+    </div>
   );
 }
 

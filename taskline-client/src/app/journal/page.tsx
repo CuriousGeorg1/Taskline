@@ -5,13 +5,15 @@ import { JournalEntry } from "@/types";
 import { columns } from "@/components/journal/journalColumns";
 
 async function getJournalData(): Promise<JournalEntry[]> {
-  return [await getJournalEntries()];
+  const data = await getJournalEntries();
+  console.log("data", data);
+  return data;
 }
 
 export default async function Home() {
   const journalData = await getJournalData();
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
       <CardWrapper />
       <DataTable columns={columns} data={journalData} />
     </div>
