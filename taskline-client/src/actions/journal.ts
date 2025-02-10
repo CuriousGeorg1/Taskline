@@ -5,7 +5,7 @@ import { JournalEntry } from "../types";
 
 export async function createJournalEntry(entry: JournalEntry) {
   try {
-    const res = await serverClient.post("/journal", entry);
+    const res = await serverClient.post("/entries", entry);
     return res.data;
   } catch (e) {
     console.error(e);
@@ -15,7 +15,7 @@ export async function createJournalEntry(entry: JournalEntry) {
 
 export async function getJournalEntries() {
   try {
-    const res = await apiClient.get("/journal");
+    const res = await serverClient.get("/journal");
     return res.data;
   } catch (e) {
     console.error(e);

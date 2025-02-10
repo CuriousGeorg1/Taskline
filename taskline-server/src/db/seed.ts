@@ -4,7 +4,7 @@ import * as schema from "./schema";
 import dotenv from "dotenv";
 import { Pool } from "pg";
 
-dotenv.config(); 
+dotenv.config();
 
 async function main() {
   const pool = new Pool({ connectionString: process.env.DB_URL! });

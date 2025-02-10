@@ -1,5 +1,3 @@
-// taskline-server/src/controller/journalController.ts
-
 import { Router } from "express";
 import {
   createJournalEntry,
@@ -8,7 +6,7 @@ import {
 
 const journalController = Router();
 
-journalController.post("/create", async (req, res) => {
+journalController.post("/", async (req, res) => {
   try {
     const journalEntry = req.body;
     const createdEntry = await createJournalEntry(journalEntry);
@@ -19,7 +17,7 @@ journalController.post("/create", async (req, res) => {
   }
 });
 
-journalController.get("/journal", async (req, res) => {
+journalController.get("/", async (req, res) => {
   try {
     const journalEntries = await getJournalEntries();
     res.status(200).json(journalEntries);
