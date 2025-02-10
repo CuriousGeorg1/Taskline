@@ -4,6 +4,7 @@ import morgan from "morgan";
 import authController from "./controller/authController";
 import { env, port } from "./config";
 import userController from "./controller/userController";
+import journalController from "./controller/journalController";
 
 const app: Express = express();
 
@@ -16,6 +17,7 @@ app.use(morgan(env === "production" ? "combined" : "dev"));
 // Bind controllers
 app.use("/auth", authController);
 app.use("/users", userController);
+app.use("/journal", journalController);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");

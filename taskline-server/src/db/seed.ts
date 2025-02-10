@@ -4,7 +4,10 @@ import { seed } from "drizzle-seed";
 import * as schema from "./schema";
 
 async function main() {
-  const db = drizzle(process.env.DATABASE_URL!);
+  const db = drizzle(process.env.DB_URL!);
   await seed(db, schema);
 }
-//main();
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

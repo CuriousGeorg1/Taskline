@@ -8,30 +8,29 @@ export const businessTable = pgTable("business", {
   name: varchar({ length: 255 }).notNull(),
 });
 
-// businessId and locationId default values are set to -1
-export const usersTable = pgTable("users", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  email: varchar({ length: 255 }).notNull().unique(),
-  name: varchar({ length: 255 }),
-  password: varchar(),
-  /*
-  omit for now
-  businessId: integer()
-    .default(-1)
-    .references(() => businessTable.id),
-  locationId: integer()
-    .default(-1)
-    .references(() => locationTable.id),
-*/
-  role: rolesEnum().notNull(),
-});
-
 export const locationTable = pgTable("location", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   businessId: integer()
     .notNull()
     .references(() => businessTable.id),
+});
+
+// businessId and locationId default values are set to -1
+export const usersTable = pgTable("users", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  email: varchar({ length: 255 }).notNull().unique(),
+  name: varchar({ length: 255 }),
+  password: varchar(),
+
+  businessId: integer()
+    .default(-1)
+    .references(() => businessTable.id),
+  locationId: integer()
+    .default(-1)
+    .references(() => locationTable.id),
+
+  role: rolesEnum().notNull(),
 });
 
 export const journalEntry = pgTable("journal_entry", {

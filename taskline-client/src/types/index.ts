@@ -27,3 +27,11 @@ export type GetTokenResponse = {
   apiToken: string;
   expiresIn: number;
 };
+
+export type JournalEntry = {
+  locationId: number;
+  userId: string;
+  date: Date;
+  entry: string;
+  responsibleParty: string;
+};
