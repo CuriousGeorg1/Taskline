@@ -1,11 +1,15 @@
-import { pgTable, integer, text } from "drizzle-orm/pg-core";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { seed } from "drizzle-seed";
 import * as schema from "./schema";
+import dotenv from "dotenv";
+import { Pool } from "pg";
+
+dotenv.config(); 
 
 async function main() {
-  const db = drizzle(process.env.DB_URL!);
-  await seed(db, { schema });
+  const pool = new Pool({ connectionString: process.env.DB_URL! });
+  const db = drizzle(pool);
+  await seed(db, schema);
 }
 main().catch((error) => {
   console.error(error);
