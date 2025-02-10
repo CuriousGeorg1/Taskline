@@ -5,7 +5,7 @@ import * as schema from "./schema";
 
 async function main() {
   const db = drizzle(process.env.DB_URL!);
-  await seed(db, schema);
+  await seed(db, { schema });
 }
 main().catch((error) => {
   console.error(error);
