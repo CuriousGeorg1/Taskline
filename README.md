@@ -11,6 +11,7 @@ tool designed for businesses. It's supposed to be quite simple in regards to sco
 [User stories](https://github.com/CuriousGeorg1/Taskline/tree/master?tab=readme-ov-file#user-stories)
 [Technologies](https://github.com/CuriousGeorg1/Taskline/tree/master#technologies)
 [UML](https://github.com/CuriousGeorg1/Taskline/tree/master#uml)
+[Lessons](https://github.com/CuriousGeorg1/Taskline/tree/master#lessons)
 
 ## Scope
 
@@ -94,7 +95,7 @@ site with the possibility to add descriptions for them.
 
 ### Database
 
-- Postgres
+- Postgres, Neon
 - DrizzleORM
 
 ### Cloud environment
@@ -110,7 +111,14 @@ site with the possibility to add descriptions for them.
 ![Screenshot 2025-01-12 at 15 31 54](https://github.com/user-attachments/assets/a6f16161-963d-425b-9d8e-8f94791bd18a)
 
 
+## Lessons
 
+### Architecture
+
+The final product will be spread in three services (Vercel, AWS and Neon) which has it's benefits and problems. Since all services are chosen based
+on the technologies in use, it will be quite efficient in specialization. The spread is also benefitial for scalability, as each service will be scaling resources independently. 
+
+As for the problems and challenges the architecture creates, complexity is the clearest one. Troubleshootig becomes more difficult as problems may rise in any of the platforms and there is a need to setup good networking for reliable data flow. Since the services may be located in varying locations geographicaly, there may be more latency as well. Edge functions could be worth implementing.
 
 
 
