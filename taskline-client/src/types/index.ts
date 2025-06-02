@@ -29,8 +29,7 @@ export type GetTokenResponse = {
 };
 
 export type JournalEntry = {
-  locationId: number;
-  userId: string;
+  name: string;
   date: Date;
   journalEntry: string;
   responsibleParty: string;

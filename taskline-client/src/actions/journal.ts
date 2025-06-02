@@ -2,6 +2,7 @@
 
 import apiClient, { serverClient } from "@/lib/apiClient";
 import { JournalEntry } from "../types";
+import { getApiToken } from "./auth";
 
 export async function createJournalEntry(entry: JournalEntry) {
   try {

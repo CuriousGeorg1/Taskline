@@ -21,7 +21,7 @@ export default async function Header() {
       </Link>
       <NavigationMenuList className="gap-2">
         <NavigationMenuItem>
-          <Link href="/journal" legacyBehavior passHref>
+          <Link href="/journal" passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Journal
             </NavigationMenuLink>
