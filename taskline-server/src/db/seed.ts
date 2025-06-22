@@ -6,6 +6,12 @@ import { Pool } from "pg";
 
 dotenv.config();
 
+/**
+ * Main function to seed the database with test data.
+ * It connects to the PostgreSQL database using the connection string
+ * provided in the environment variable DB_URL and seeds it with the
+ * data defined in the schema.
+ */
 async function main() {
   const pool = new Pool({ connectionString: process.env.DB_URL! });
   const db = drizzle(pool);

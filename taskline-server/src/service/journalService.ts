@@ -2,7 +2,12 @@
 
 import { date } from "drizzle-orm/mysql-core";
 import { db } from "../db";
-import { journalEntry, usersTable } from "../db/schema";
+import {
+  businessTable,
+  journalEntry,
+  usersTable,
+  locationTable,
+} from "../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function createJournalEntry(entryData: any) {
@@ -20,7 +25,7 @@ export async function getJournalEntries() {
       responsibleParty: journalEntry.responsibleParty,
     })
     .from(journalEntry)
-    .leftJoin(usersTable, eq(journalEntry.locationId, usersTable.locationId))
+    .innerJoin(usersTable, eq(journalEntry.userId, usersTable.id))
     .execute();
   return entries;
 }
