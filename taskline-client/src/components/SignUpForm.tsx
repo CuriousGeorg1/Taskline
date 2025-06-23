@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
 import { signInWithCredentials } from "@/actions/signIn";
 import { AuthError } from "next-auth";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
@@ -22,10 +23,14 @@ export default function SignUpForm() {
     defaultValues: {
       name: "",
       email: "",
-      password: "",
-      passwordConfirmation: "",
+      password: "", // Password field
+      passwordConfirmation: "", // Password confirmation field
+      newBusiness: false, // Checkbox for creating a new business
+      newBusinessName: "", // Optional field for business name in case of new business creation
     },
   });
+
+  const newBusiness = form.watch("newBusiness"); // Watch the newBusiness checkbox state
 
   async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     try {
@@ -93,6 +98,39 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="newBusiness"
+          render={({ field }) => (
+            <FormItem className="flex items-center space-x-2">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(checked) => field.onChange(checked)}
+                />
+              </FormControl>
+              <FormLabel>Create a new business</FormLabel>
+            </FormItem>
+          )}
+        />
+        {newBusiness && (
+          <FormField
+            control={form.control}
+            name="newBusinessName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Business name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Business name"
+                    type="newBusinessName"
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
         <Button type="submit" className="w-full">
           Create account
         </Button>

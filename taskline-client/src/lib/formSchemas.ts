@@ -20,6 +20,14 @@ export const signUpFormSchema = z
         "Password must contain at least one uppercase letter, one lowercase letter, and one number"
       ),
     passwordConfirmation: z.string(),
+    newBusiness: z.boolean().default(false),
+    newBusinessName: z
+      .string()
+      .regex(
+        /^[a-zA-Z0-9 ]+$/,
+        "Business name can only contain letters, numbers, and spaces"
+      )
+      .optional(),
   })
   .superRefine((data, context) => {
     if (data.password !== data.passwordConfirmation) {
