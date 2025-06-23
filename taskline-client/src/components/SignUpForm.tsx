@@ -113,7 +113,7 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-        {newBusiness && (
+        {newBusiness && ( // Conditionally render the business name field if newBusiness is true
           <FormField
             control={form.control}
             name="newBusinessName"
