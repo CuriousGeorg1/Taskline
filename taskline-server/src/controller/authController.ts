@@ -22,6 +22,7 @@ authController.post("/login", async (req, res) => {
 authController.post("/register", async (req, res) => {
   // Implement better validation later
   const user = req.body as RegisterRequest;
+  console.log("User registration request", user);
 
   try {
     const newUser = await register(user);
@@ -39,6 +40,5 @@ authController.post("/token", hasSharedSecret, async (req, res) => {
   const getTokenResponse = await createToken(getTokenRequest);
   res.status(200).json(getTokenResponse);
 });
-
 
 export default authController;

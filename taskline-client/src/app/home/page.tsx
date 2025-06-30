@@ -1,0 +1,24 @@
+import { auth } from "@/authConfig";
+import { redirect } from "next/navigation";
+import { UserLocationsProvider } from "@/lib/userLocations";
+import { useUserLocations } from "@/lib/userLocations";
+
+export default async function Home() {
+  const session = await auth();
+
+  if (!session) {
+    // If no session exists, redirect to login
+    redirect("/");
+  }
+
+  return (
+    <main className="flex h-screen justify-start flex-col">
+      <div className="flex flex-col items-center justify-center h-full">
+        <h1 className="text-2xl font-bold">Welcome to Taskline</h1>
+      </div>
+      {/* <UserLocationsProvider apiToken={session.apiToken}>
+    {/* children */}
+      {/* </UserLocationsProvider> */} */
+    </main>
+  );
+}

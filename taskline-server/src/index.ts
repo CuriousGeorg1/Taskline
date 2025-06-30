@@ -5,6 +5,7 @@ import authController from "./controller/authController";
 import { env, port } from "./config";
 import userController from "./controller/userController";
 import journalController from "./controller/journalController";
+import userDataController from "./controller/userDataController";
 
 const app: Express = express();
 
@@ -18,6 +19,7 @@ app.use(morgan(env === "production" ? "combined" : "dev"));
 app.use("/auth", authController);
 app.use("/users", userController);
 app.use("/journal", journalController);
+app.use("/user-data", userDataController);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");

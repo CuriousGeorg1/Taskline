@@ -3,7 +3,7 @@ export type CreateUserRequest = {
   email: string;
   password?: string;
   profilePicture?: string | null;
-  role: "user" | "admin";
+  role: "user" | "admin" | "owner";
 };
 
 export type LoginRequest = {
@@ -15,7 +15,8 @@ export type RegisterRequest = {
   name: string;
   email: string;
   password: string;
-  role: "user" | "admin";
+  role: "user" | "admin" | "owner";
+  newBusinessName?: string;
 };
 
 export type GetTokenRequest = {

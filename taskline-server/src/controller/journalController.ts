@@ -3,10 +3,11 @@ import {
   createJournalEntry,
   getJournalEntries,
 } from "../service/journalService";
+import { authenticated } from "../middleware/authMiddleware";
 
 const journalController = Router();
 
-journalController.post("/", async (req, res) => {
+journalController.post("/", authenticated, async (req, res) => {
   try {
     const journalEntry = req.body;
     const createdEntry = await createJournalEntry(journalEntry);
@@ -17,7 +18,7 @@ journalController.post("/", async (req, res) => {
   }
 });
 
-journalController.get("/", async (req, res) => {
+journalController.get("/", authenticated, async (req, res) => {
   try {
     const journalEntries = await getJournalEntries();
     res.status(200).json(journalEntries);

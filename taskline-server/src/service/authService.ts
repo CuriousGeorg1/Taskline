@@ -18,7 +18,7 @@ export async function login(email: string, password: string) {
     throw new Error("User not found");
   }
   if (user.password === null) {
-    throw new Error("User password is null");
+    throw new Error("User password is empty");
   }
   const match = await bcrypt.compare(password, user.password);
   if (!match) {

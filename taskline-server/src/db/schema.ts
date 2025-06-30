@@ -7,8 +7,16 @@
  */
 
 import { date } from "drizzle-orm/pg-core";
-import { integer, pgTable, varchar, pgEnum, text } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgTable,
+  varchar,
+  pgEnum,
+  text,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { timestamps } from "./columns.helpers";
+import { sql } from "drizzle-orm";
 
 // Enums for schema
 export const rolesEnum = pgEnum("user_roles", ["admin", "user", "owner"]);
@@ -18,30 +26,34 @@ export const entryStateEnum = pgEnum("entry_state", [
 ]);
 
 export const businessTable = pgTable("business", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   name: varchar({ length: 255 }).notNull(),
   ...timestamps,
 });
 
 export const locationTable = pgTable("location", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   name: varchar({ length: 255 }).notNull(),
-  businessId: integer()
+  businessId: uuid("businessId")
     .notNull()
-    .references(() => businessTable.id),
+    .references(() => businessTable.id, { onDelete: "cascade" }),
   ...timestamps,
 });
 
-// businessId and locationId default values are set to -1
 export const usersTable = pgTable("users", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
   email: varchar({ length: 255 }).notNull().unique(),
   name: varchar({ length: 255 }).notNull(),
   password: varchar(),
-
-  businessId: integer()
-    .default(-1)
-    .references(() => businessTable.id),
+  businessId: uuid("businessId").references(() => businessTable.id, {
+    onDelete: "cascade",
+  }),
   // locationId: integer()
   //   .default(-1)
   //   .references(() => locationTable.id),
@@ -50,19 +62,19 @@ export const usersTable = pgTable("users", {
 });
 
 export const userLocationTable = pgTable("user_locations", {
-  userId: integer()
+  userId: uuid()
     .notNull()
     .references(() => usersTable.id),
-  locationId: integer()
+  locationId: uuid()
     .notNull()
     .references(() => locationTable.id),
 });
 
 export const journalEntry = pgTable("journal_entry", {
-  locationId: integer()
+  locationId: uuid()
     .notNull()
     .references(() => locationTable.id),
-  userId: integer()
+  userId: uuid()
     .notNull()
     .references(() => usersTable.id),
   date: date().notNull(),
@@ -72,7 +84,7 @@ export const journalEntry = pgTable("journal_entry", {
 });
 
 export const Announcements = pgTable("announcements", {
-  locationId: integer().references(() => locationTable.id),
+  locationId: uuid().references(() => locationTable.id),
   expirationDate: date().notNull(),
   entry: text().notNull(),
   startDate: date(),
@@ -80,7 +92,7 @@ export const Announcements = pgTable("announcements", {
 });
 
 export const photos = pgTable("photos", {
-  locationID: integer().references(() => locationTable.id),
+  locationID: uuid().references(() => locationTable.id),
   photoURL: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }).notNull(),
   ...timestamps,
