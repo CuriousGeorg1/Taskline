@@ -3,10 +3,11 @@
 import apiClient, { serverClient } from "@/lib/apiClient";
 import { JournalEntry } from "../types";
 import { getApiToken } from "./auth";
+import { redirect } from "next/navigation";
 
 export async function createJournalEntry(entry: JournalEntry) {
   try {
-    const res = await serverClient.post("/entries", entry);
+    const res = await apiClient.post("/entries", entry);
     return res.data;
   } catch (e) {
     console.error(e);
@@ -14,9 +15,18 @@ export async function createJournalEntry(entry: JournalEntry) {
   }
 }
 
-export async function getJournalEntries() {
+export async function getJournalEntries(
+  sessionToken: string | undefined
+): Promise<JournalEntry[]> {
+  if (!sessionToken) {
+    redirect("/errors/noSession");
+  }
   try {
-    const res = await serverClient.get("/journal");
+    const res = await apiClient.get("/journal", {
+      headers: {
+        Authorization: `Bearer ${sessionToken}`,
+      },
+    });
     return res.data;
   } catch (e) {
     console.error(e);

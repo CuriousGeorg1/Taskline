@@ -5,6 +5,7 @@ declare module "next-auth" {
   interface User {
     apiToken?: string;
     expiresIn?: number;
+    role: "user" | "admin" | "owner";
   }
 
   interface Session {

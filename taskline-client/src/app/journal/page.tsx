@@ -6,8 +6,10 @@ import { columns } from "@/components/journal/journalColumns";
 import { auth } from "@/authConfig";
 import { redirect } from "next/navigation";
 
-async function getJournalData(): Promise<JournalEntry[]> {
-  const data = await getJournalEntries();
+async function getJournalData(
+  sessionToken: string | undefined
+): Promise<JournalEntry[]> {
+  const data = await getJournalEntries(sessionToken);
   console.log("data", data);
   return data;
 }
@@ -21,11 +23,13 @@ export default async function Home() {
     redirect("/");
   }
 
-  const journalData = await getJournalEntries();
+  const journalData = await getJournalData(session.apiToken);
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <CardWrapper />
-      <DataTable columns={columns} data={journalData} />
-    </div>
+    <main className="flex h-screen justify-start flex-col">
+      <div className="flex flex-col items-center justify-center h-full">
+        <CardWrapper />
+        <DataTable columns={columns} data={journalData} />
+      </div>
+    </main>
   );
 }
