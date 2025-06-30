@@ -17,16 +17,35 @@ const providers: Provider[] = [
       This function is for the credentials provider and it uses custom backend to authorize the user
     */
     async authorize(c) {
-      const { name, email, password, mode } = c as {
-        name: string;
-        email: string;
-        password: string;
-        mode: "signup" | "signin";
-      };
+      const { name, email, password, mode, newBusiness, newBusinessName } =
+        c as {
+          name: string;
+          email: string;
+          password: string;
+          mode: "signup" | "signin";
+          newBusiness?: boolean;
+          newBusinessName?: string;
+        };
+
+      console.log(c);
 
       if (mode === "signup") {
-        const user = await register({ name, email, password, role: "user" });
-        return user;
+        if (newBusiness && newBusinessName) {
+          // Handle new business creation logic here
+          console.log("Creating new business:", newBusinessName);
+          const user = await register({
+            name,
+            email,
+            password,
+            role: "owner",
+            newBusinessName: newBusinessName,
+          });
+        } else {
+          // Handle user registration logic here
+          console.log("Registering user:", name);
+          const user = await register({ name, email, password, role: "user" });
+          return user;
+        }
       }
       const user = await login({ email, password });
       return user;
@@ -66,7 +85,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         name: user.name as string,
         email: user.email as string,
         profilePicture: user.image,
-        role: "user",
+        role: user.role as "user" | "owner",
       });
     },
     /*
@@ -78,7 +97,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user) {
         token.id = user.id;
         token.name = user.name;
-        token.role = "role"; // Change this to the role of the user. Role will be set in signIn callback
+        token.role = user.role; // Change this to the role of the user. Role will be set in signIn callback
 
         if (user.apiToken && user.expiresIn) {
           token.apiToken = user.apiToken;
@@ -89,7 +108,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const { apiToken, expiresIn } = await getApiToken({
           id: user.id as string,
           email: user.email as string,
-          role: "user",
+          role: user.role as "user" | "admin" | "owner",
         });
 
         token.apiToken = apiToken;
@@ -109,7 +128,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const { apiToken, expiresIn } = await getApiToken({
             id: token.id as string,
             email: token.email as string,
-            role: token.role as "user" | "admin",
+            role: token.role as "user" | "admin" | "owner",
           });
           token.apiToken = apiToken;
           token.apiTokenExpiry = Date.now() + expiresIn * 1000;
@@ -124,6 +143,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       session.apiToken = token.apiToken as string;
       session.user.id = token.id as string;
+      session.user.role = token.role as "user" | "admin" | "owner";
       return session;
     },
   },

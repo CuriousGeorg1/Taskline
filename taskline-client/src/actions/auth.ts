@@ -27,6 +27,7 @@ export async function login(user: LoginRequest) {
 */
 export async function register(user: RegisterRequest) {
   try {
+    console.log("Registering user", user);
     const res = await apiClient.post("/auth/register", user);
     return res.data;
   } catch (e) {
@@ -56,13 +57,13 @@ export async function createUser(user: CreateUserRequest) {
 */
 export async function getApiToken(user: GetTokenRequest) {
   try {
-    const res = await serverClient.post<{ apiToken: string; expiresIn: number }>(
-      "/auth/token",
-      {
-        sharedSecret,
-        ...user,
-      }
-    );
+    const res = await serverClient.post<{
+      apiToken: string;
+      expiresIn: number;
+    }>("/auth/token", {
+      sharedSecret,
+      ...user,
+    });
     return res.data;
   } catch (e) {
     console.error(e);

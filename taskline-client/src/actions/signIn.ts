@@ -17,6 +17,6 @@ export async function signInWithCredentials(
     email: values.email,
     password: values.password,
     mode,
-    redirectTo: "/",
+    redirectTo: "/home",
   });
 }
