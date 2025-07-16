@@ -15,6 +15,7 @@ export async function hasSharedSecret(
   next();
 }
 
+// Middleware to check if the request is authenticated
 export async function authenticated(
   req: Request,
   res: Response,
@@ -26,9 +27,12 @@ export async function authenticated(
     return;
   }
   // Check if token is valid
-  if (!verifyToken(token)) {
+
+  const decoded = verifyToken(token);
+  if (!decoded) {
     res.status(401).json({ message: "Unauthorized: Invalid token" });
     return;
   }
+  req.user = decoded;
   next();
 }

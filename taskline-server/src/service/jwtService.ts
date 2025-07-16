@@ -21,11 +21,12 @@ export async function createToken(
 }
 
 // A function that verifies the jwt token
-export function verifyToken(token: string): boolean {
+export function verifyToken(token: string) {
   try {
-    jwt.verify(token, sharedSecret);
-    return true;
+    const decoded = jwt.verify(token, sharedSecret);
+    console.log(decoded);
+    return decoded;
   } catch (e) {
-    return false;
+    return null;
   }
 }
