@@ -9,7 +9,7 @@ import {
 import { eq } from "drizzle-orm";
 import { verifyToken } from "./jwtService";
 
-export async function getUserLocations(apiToken: any) {
+export async function getUserLocations(userId: any) {
   console.log("Here");
   // Fetch the user locations
   const locations = await db
@@ -18,7 +18,7 @@ export async function getUserLocations(apiToken: any) {
       name: locationTable.name,
     })
     .from(locationTable)
-    .innerJoin(userLocationTable, eq(apiToken.id, userLocationTable.userId));
+    .innerJoin(userLocationTable, eq(userId, userLocationTable.userId));
 
   return locations;
 }

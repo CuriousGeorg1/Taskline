@@ -1,3 +1,5 @@
+//Controller for rquests handling user-specific data.
+
 import { Router } from "express";
 import { authenticated } from "../middleware/authMiddleware";
 import { getUserLocations } from "../service/userDataService";
@@ -6,11 +8,24 @@ import { GetTokenRequest } from "../types";
 
 const userDataController = Router();
 
-userDataController.get("/locations", async (req, res) => {
-  const request = req.body as GetTokenRequest;
-
+/**
+ * Handles requests for fetching user-specific location data.
+ * @remarks
+ * It is primarily used to retrieve location data for the "/home" page.
+ * @returns
+ * - 200: Returns a JSON array of user locations on success.
+ * - 500: Returns a JSON error message if fetching locations fails.
+ */
+userDataController.get("/locations", authenticated, async (req, res) => {
   try {
-    const locations = await getUserLocations(req);
+    const userId = (req.user as any).sub;
+
+    if (!userId) {
+      res.status(400).json({ message: "User not found." });
+      return;
+    }
+
+    const locations = await getUserLocations(userId);
     res.status(200).json(locations);
   } catch (e) {
     console.log("Failed to fetch locations");
