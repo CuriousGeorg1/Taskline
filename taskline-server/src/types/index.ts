@@ -1,3 +1,6 @@
+import { PgUUID } from "drizzle-orm/pg-core";
+import { JwtPayload } from "jsonwebtoken";
+
 export type CreateUserRequest = {
   name: string;
   email: string;
@@ -29,3 +32,20 @@ export type GetTokenResponse = {
   apiToken: string;
   expiresIn: number;
 };
+
+export type BusinessInfo = {
+  businessName: string;
+};
+
+export type CreateBusinessRequest = {
+  userId: string;
+  businessInfo: BusinessInfo;
+};
+
+declare global {
+  namespace Express {
+    export interface Request {
+      user?: string | JwtPayload;
+    }
+  }
+}

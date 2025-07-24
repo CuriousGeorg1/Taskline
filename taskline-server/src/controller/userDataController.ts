@@ -20,11 +20,13 @@ userDataController.get("/locations", authenticated, async (req, res) => {
   try {
     const userId = (req.user as any).sub;
 
+    // If no userId, bail
     if (!userId) {
       res.status(400).json({ message: "User not found." });
       return;
     }
 
+    // Fetch user locations
     const locations = await getUserLocations(userId);
     res.status(200).json(locations);
   } catch (e) {

@@ -21,13 +21,14 @@ export async function authenticated(
   res: Response,
   next: NextFunction
 ) {
+  // Extract token from authorisation header
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
     res.status(401).json({ message: "Unauthorized: Missing token" });
     return;
   }
-  // Check if token is valid
 
+  // Verify and decode token
   const decoded = verifyToken(token);
   if (!decoded) {
     res.status(401).json({ message: "Unauthorized: Invalid token" });
