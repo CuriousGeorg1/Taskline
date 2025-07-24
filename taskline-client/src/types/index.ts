@@ -42,3 +42,7 @@ export type UserLocation = {
   id: string;
   name: string;
 };
+
+export type CreateBusinessRequest = {
+  businessName: string;
+};

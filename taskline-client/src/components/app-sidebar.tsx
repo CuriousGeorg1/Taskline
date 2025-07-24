@@ -1,3 +1,4 @@
+"use client";
 // imprts icons for the sidebar
 import {
   Camera,
@@ -19,7 +20,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import { signOut } from "@/authConfig";
+import { signOut } from "next-auth/react";
 
 /* Group: Application.
  * This group contains the main application links.
@@ -54,7 +55,7 @@ const items = [
 const actions = [
   {
     title: "Sign Out",
-    url: "/auth/signout",
+    action: signOut,
     icon: LogOut,
   },
 ];
@@ -86,11 +87,9 @@ export function AppSidebar() {
             <SidebarMenu>
               {actions.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
+                  <SidebarMenuButton onClick={async () => item.action()}>
+                    <item.icon />
+                    <span>{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
