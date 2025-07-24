@@ -1,7 +1,8 @@
-import { CreateUserRequest } from "../types";
+import { CreateBusinessRequest, CreateUserRequest } from "../types";
 import { db } from "../db";
 import { usersTable, businessTable } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { PgUUID } from "drizzle-orm/pg-core";
 
 export async function userExists(email: string) {
   const existingUser = await db
@@ -40,13 +41,18 @@ export async function createUser(user: CreateUserRequest) {
   return newUser;
 }
 
-export async function createBusiness(businessName: string) {
-  const [newBusiness] = await db
-    .insert(businessTable)
-    .values({ name: businessName })
-    .returning();
+export async function createBusiness(request: CreateBusinessRequest) {
+  await db.transaction(async (tx) => {
+    const [business] = await tx
+      .insert(businessTable)
+      .values({ name: request.businessInfo.businessName })
+      .returning();
 
-  return newBusiness;
+    await tx
+      .update(usersTable)
+      .set({ role: "owner", businessId: business.id })
+      .where(eq(usersTable.id, request.userId));
+  });
 }
 
 export async function getUserByEmail(email: string) {
