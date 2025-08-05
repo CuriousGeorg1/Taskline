@@ -1,4 +1,3 @@
-"use client";
 import { fetchUserLocations } from "@/actions/userData";
 import {
   Table,
@@ -10,45 +9,38 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { UserLocation } from "@/types";
-import { error } from "console";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import { CreateBusinessButton } from "./createBusinessButton";
+export const LocationsTable = async () => {
+  let locations: UserLocation[] = [];
 
-export const LocationsTable = (user: any) => {
-  const [locations, setLocations] = useState([] as UserLocation[]);
-
-  useEffect(() => {
-    fetchUserLocations(user)
-      .then((response) => {
-        if (Array.isArray(response)) {
-          setLocations(response);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to fetch locations", error);
-      });
-  }, [user]);
+  try {
+    const response = await fetchUserLocations();
+    if (Array.isArray(response)) {
+      locations = response;
+      console.log("Locations fetched");
+    }
+  } catch (error) {
+    console.error("Failed to fetch locations", error);
+  }
 
   if (locations.length === 0) {
     return (
       <p>
         No teams found. Wait to be added to a business or{" "}
-        <Link className="text-blue-500" href="/home/create-business">
-          create your own
-        </Link>
-        .
+        <CreateBusinessButton />.
       </p>
     );
-  } else {
-    return (
-      <Table>
-        <TableCaption>A list of your teams</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Team name</TableHead>
-          </TableRow>
-        </TableHeader>
-      </Table>
-    );
   }
+
+  return (
+    <Table>
+      <TableCaption>A list of your teams</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Team name</TableHead>
+        </TableRow>
+      </TableHeader>
+      {/* Add TableBody and TableRows for locations data */}
+    </Table>
+  );
 };

@@ -41,18 +41,48 @@ export async function createUser(user: CreateUserRequest) {
   return newUser;
 }
 
-export async function createBusiness(request: CreateBusinessRequest) {
-  await db.transaction(async (tx) => {
-    const [business] = await tx
-      .insert(businessTable)
-      .values({ name: request.businessInfo.businessName })
-      .returning();
+export async function createBusiness(
+  request: CreateBusinessRequest
+): Promise<{ businessId: string; user: any }> {
+  if (!request.businessInfo?.businessName?.trim() || !request.userId) {
+    throw new Error("Invalid request for creating business");
+  }
 
-    await tx
-      .update(usersTable)
-      .set({ role: "owner", businessId: business.id })
-      .where(eq(usersTable.id, request.userId));
-  });
+  /* Transaction for creating business. In the transaction both inserting the new business
+  / to the database and updating users role to owner and assigning the user to the created business
+  / must succeed 
+  */
+  try {
+    return await db.transaction(async (tx) => {
+      // create business
+      const [business] = await tx
+        .insert(businessTable)
+        .values({ name: request.businessInfo.businessName })
+        .returning();
+
+      if (!business) {
+        tx.rollback();
+        throw new Error("Failed to create business");
+      }
+
+      // Update users' role and business
+      const updatedUser = await tx
+        .update(usersTable)
+        .set({ role: "owner", businessId: business.id })
+        .where(eq(usersTable.id, request.userId))
+        .returning();
+
+      if (updatedUser.length === 0) {
+        tx.rollback();
+        throw new Error("Failed to create business");
+      }
+
+      return { businessId: business.id, user: updatedUser[0] };
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function getUserByEmail(email: string) {

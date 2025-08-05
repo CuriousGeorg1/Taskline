@@ -15,7 +15,7 @@ export default async function Home() {
       <div className="flex flex-col items-center justify-center h-full">
         <h1 className="text-2xl font-bold">Welcome to Taskline</h1>
       </div>
-      <LocationsTable user={session} />
+      <LocationsTable />
     </main>
   );
 }

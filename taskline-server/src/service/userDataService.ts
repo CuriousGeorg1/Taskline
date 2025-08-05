@@ -27,7 +27,7 @@ export async function getUserLocations(userId: any) {
       name: locationTable.name,
     })
     .from(locationTable)
-    .innerJoin(userLocationTable, eq(userId, userLocationTable.userId));
+    .innerJoin(userLocationTable, eq(userLocationTable.userId, userId));
 
   return locations;
 }
